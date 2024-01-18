@@ -1,8 +1,10 @@
 package org.dm.gradle.plugins.bundle
 
+import org.gradle.api.Action
 import org.gradle.api.java.archives.Attributes
 import org.gradle.api.java.archives.Manifest
 import org.gradle.api.java.archives.ManifestException
+import org.gradle.api.java.archives.ManifestMergeSpec
 import org.gradle.api.java.archives.internal.DefaultManifest
 
 import java.nio.charset.Charset
@@ -22,7 +24,6 @@ class ManifestSubstitute implements Manifest {
         this.wrapped = wrapped ?: new DefaultManifest(null)
     }
 
-    @Override
     Manifest writeTo(Writer writer) {
         jarBuilderFactory.create().writeManifestTo(new WriterToOutputStreamAdapter(writer, CHARSET)) { manifest ->
             manifest.mainAttributes.remove(new java.util.jar.Attributes.Name(BND_LASTMODIFIED))
@@ -65,6 +66,11 @@ class ManifestSubstitute implements Manifest {
     @Override
     Manifest from(Object... mergePath) {
         return wrapped.from(mergePath)
+    }
+
+    @Override
+    Manifest from(Object o, Action<ManifestMergeSpec> action) {
+        return wrapped.from(o, action)
     }
 
     @Override

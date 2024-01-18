@@ -63,9 +63,7 @@ final class BundleUtils {
 
     static File[] getResources(Project project) {
         def output = project.sourceSets.main.output
-        [output.classesDir, output.resourcesDir].findAll {
-            it.exists()
-        }
+        output.classesDirs.filter { it.exists() } + [output.resourcesDir].findAll { it.exists() }
     }
 
     static boolean getTrace(Jar jarTask) {

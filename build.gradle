@@ -17,9 +17,9 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.gradle.plugin-publish'
 
 group = 'org.dm.gradle'
-version = '0.6.4'
+version = '0.6.4.1'
 
-def compatibilityVersion = 1.6
+def compatibilityVersion = 1.8
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 
@@ -59,7 +59,7 @@ dependencies {
 }
 
 task integTest(type: Test, dependsOn: classes) {
-    testClassesDir = sourceSets.integTest.output.classesDir
+    testClassesDirs = sourceSets.integTest.output.classesDirs
     classpath = sourceSets.integTest.runtimeClasspath
     reports.html.destination = file("$buildDir/reports/integTests")
     reports.junitXml.destination = file("$buildDir/integTest-results")
@@ -179,8 +179,4 @@ eclipse.classpath.file {
     whenMerged { cp ->
         cp.entries.removeAll { (it.kind == "src") && (it.path =~ /resources/) }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
 }
